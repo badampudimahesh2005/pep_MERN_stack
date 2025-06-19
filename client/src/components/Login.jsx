@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-const Login = () => {
+const Login = ({updateUserDetails}) => {
   const [user, setUser] = useState({
     email: '',
     password: ''
@@ -22,7 +22,9 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!validateForm()) return;
-    navigate('/');
+
+    updateUserDetails(user);
+    // navigate('/dashboard');
     console.log('User logged in:', user);
     setError(null);
     setUser({
@@ -38,6 +40,10 @@ const Login = () => {
     }
     if (!/\S+@\S+\.\S+/.test(user.email)) {
       setError('Please enter a valid email address');
+      return false;
+    }
+    if (user.password.length < 6) {
+      setError('Password must be at least 6 characters long');
       return false;
     }
     return true;
@@ -67,7 +73,7 @@ const Login = () => {
         <br />
         {error && <p className="text-red-500 mb-4">{error}</p>}
         <Link to="/register" className=" mb-4">Don't have an account?<span className="text-blue-500 hover:underline"> Register here</span></Link>
-        <button type="submit" className="bg-blue-500 text-white p-2 rounded ">Login</button>
+        <button type="submit" className="bg-pink-500 text-white p-2 rounded ">Login</button>
       </form>
     </div>
   );
